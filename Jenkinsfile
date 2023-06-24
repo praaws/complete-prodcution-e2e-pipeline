@@ -4,7 +4,7 @@ pipeline{
     }
 
     tools{
-        openjdk 'Java17'
+        jdk 'Java17'
         maven 'Maven3'
     }
 
@@ -17,7 +17,7 @@ pipeline{
 
         stage('checkout SCM'){
             steps{
-            git branch: 'devops',CredentialsId: 'github',url: 'https://github.com/praaws/complete-prodcution-e2e-pipeline.git'
+            git branch: 'devops',credentialsId: 'github',url: 'https://github.com/praaws/complete-prodcution-e2e-pipeline.git'
             }
        }
     }
