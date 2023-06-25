@@ -46,11 +46,10 @@ pipeline{
         stage('Quality gate check'){
             steps{
                 script{
-                    def qg = waitForQualityGate()
+                    def qg = waitForQualityGate abortPipeline: false,credentialsId: 'sonarqube-jenkins-token'
 
                     if (qg.status != 'OK'){
                         error 'quality gate has not been passed'
-                        abortPipeline()
                     }
                 }
             }
