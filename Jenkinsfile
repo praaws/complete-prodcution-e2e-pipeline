@@ -6,7 +6,6 @@ pipeline{
     tools{
         jdk 'Java17'
         maven 'Maven3'
-        sonarqube scanner 'Sonar4.8'
     }
 
     stages{
@@ -36,8 +35,10 @@ pipeline{
 
         stage('static code analysis'){
             steps{
+                script{
                 withSonarQubeEnv(credentialsId: 'sonarqube-jenkins-token'){
                     sh 'mvn sonar:sonar'
+                    }
                 }
             }
         }
