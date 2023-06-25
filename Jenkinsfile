@@ -20,6 +20,18 @@ pipeline{
             git branch: 'devops',credentialsId: 'github',url: 'https://github.com/praaws/complete-prodcution-e2e-pipeline.git'
             }
        }
+
+        stage('Build the artifact'){
+            steps{
+                sh 'mvn clean package'
+            }
+        }
+
+        stage('Tests'){
+            steps{
+                sh 'mvn test'
+            }
+        }
     }
   
 }
