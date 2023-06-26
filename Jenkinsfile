@@ -8,6 +8,12 @@ pipeline{
         maven 'Maven3'
     }
 
+    environment{
+        REPO_NAME = "complete-production-e2e-pipeline"
+        RELEASE = "1.0.0"
+        IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
+    }
+
     stages{
         stage('clean the Jenkins Workspace'){
             steps{
@@ -43,10 +49,23 @@ pipeline{
             }
         }
 
-        stage('Quality gate check'){
+        stage('Docker image build and scan'){
             steps{
                 script{
-                    waitForQualityGate abortPipeline: false,credentialsId: 'sonarqube-jenkins-token'
+                    def docker_image = docker.build("${REPO_NAME}")
+                }
+            }
+        }
+
+        stage('Docker push'){
+            steps{
+                script{
+                    def docker_image = docker.image("${REPO_NAME}")
+
+                        docker.withRegistry('704437922618.dkr.ecr.us-east-2.amazonaws.com','Jenkins-ECR'){
+                        docker_image.push("${IMAGE_TAG}")
+                        docker_image.push("latest")
+                    }
                 }
             }
         }
