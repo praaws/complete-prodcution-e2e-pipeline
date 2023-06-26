@@ -63,9 +63,9 @@ pipeline{
                 script{
                     def docker_image = docker.image("${IMAGE_NAME}")
 
-                        docker.withRegistry('704437922618.dkr.ecr.us-east-2.amazonaws.com','Jenkins-ECR'){
-                        docker_image.push("${IMAGE_TAG}")
-                        docker_image.push("latest")
+                    docker.withRegistry('704437922618.dkr.ecr.us-east-2.amazonaws.com','jenkins-ecr-access'){
+                    docker_image.push("${IMAGE_TAG}")
+                    docker_image.push("latest")
                     }
                 }
             }
