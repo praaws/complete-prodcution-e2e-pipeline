@@ -11,6 +11,7 @@ pipeline{
     environment{
         REPO_NAME = "complete-production-e2e-pipeline"
         RELEASE = "1.0.0"
+        IMAGE_NAME = "704437922618.dkr.ecr.us-east-2.amazonaws.com/${REPO_NAME}"
         IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
     }
 
@@ -52,7 +53,7 @@ pipeline{
         stage('Docker image build and scan'){
             steps{
                 script{
-                    def docker_image = docker.build("${REPO_NAME}")
+                    def docker_image = docker.build("${IMAGE_NAME}")
                 }
             }
         }
@@ -60,7 +61,7 @@ pipeline{
         stage('Docker push'){
             steps{
                 script{
-                    def docker_image = docker.image("${REPO_NAME}")
+                    def docker_image = docker.image("${IMAGE_NAME}")
 
                         docker.withRegistry('704437922618.dkr.ecr.us-east-2.amazonaws.com','Jenkins-ECR'){
                         docker_image.push("${IMAGE_TAG}")
